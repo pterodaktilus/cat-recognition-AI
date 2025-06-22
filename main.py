@@ -2,6 +2,7 @@ import cupy as cp
 import PIL.Image as Image
 import os
 from testing import test
+from checking import check
 
 
 from typing import Tuple
@@ -14,9 +15,10 @@ def loadimage(path: str) -> cp.ndarray:
 
 
 def main():
-    path = os.getcwd()+"\\dataset\\training_set\\cats"
-    img = loadimage(path+"\\cat.1.jpg")
+    path = os.getcwd()+"\\PetImages\\Dog"
+    img = loadimage(path+"\\0.jpg")
     result = test(img)
+    check_result = check(result)
 
     
 
