@@ -1,8 +1,8 @@
 import cupy as cp
 import PIL.Image as Image
 import os
-from testing import test
-from checking import backpropagate
+from testing import ForwardPropagation
+from checking import Backpropagation
 
 from typing import Tuple
 
@@ -32,9 +32,10 @@ def main():
 
     img = loadimage(path+"\\0.jpg")
 
-    result = test(img)
-
-    check_result = backpropagate(result)
+    forward = ForwardPropagation(img)
+    result = forward.run(img)
+    learn = Backpropagation(forward)
+    check_result = learn.backpropagate(result)
 
 
 if __name__ == "__main__":

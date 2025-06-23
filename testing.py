@@ -17,6 +17,7 @@ class ForwardPropagation:
         self.input = input_
         self.output = None
         self.weights_ = [self.weights(i) for i in range(4)]
+        self.hiddenlayers = []
 
     @staticmethod
     def weights(index: int) -> cp.ndarray:
@@ -142,7 +143,7 @@ class ForwardPropagation:
             arr.append(expit(cp.sum(input_ * weight) + bias))
         return cp.asarray(arr).reshape(len(arr), 1).astype(cp.float16)
 
-    def run(self, input_: cp.ndarray) -> cp.ndarray:
+    def run(self) -> cp.ndarray:
         """
         Run the forward propagation process on the input.
 
@@ -152,7 +153,7 @@ class ForwardPropagation:
         Returns:
             cp.ndarray: Final output after all layers.
         """
-        con = self.convolve(input_, 11, 0, 4)
+        con = self.convolve(self.input, 11, 0, 4)
         pooled = self.pooling(con, 3, 2)
         con = self.convolve(pooled, 5, 2)
         pooled = self.pooling(con, 3, 2)
@@ -162,6 +163,6 @@ class ForwardPropagation:
         output = self.pooling(con, 3, 2)
 
         for i in range(4):
-            output = self.perceptron(output, self.weights_[i], 0)
-        print(output.astype(float))
-        return output
+            activation = self.perceptron(output, self.weights_[i], 0)
+            self.hiddenlayers.append(activation)
+        return activation
